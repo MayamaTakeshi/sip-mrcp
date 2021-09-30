@@ -1,0 +1,35 @@
+{
+  "name": "sip-mrcp",
+  "version": "1.0.0",
+  "description": "A SIP/MRCP module that permits to write MRCPv2 client/server apps",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MayamaTakeshi/sip-mrcp.git"
+  },
+  "keywords": [
+    "Media",
+    "Resource",
+    "Control",
+    "Protocol",
+    "MRCP",
+    "SIP"
+  ],
+  "engines": {
+    "node": "v12.19.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "homepage": "https://github.com/MayamaTakeshi/sip-mrcp#readme",
+  "author": "MayamaTakeshi",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "mrcp": "^1.3.3",
+    "mrcp-utils": "^1.1.2",
+    "rtp-session": "^1.3.2",
+    "sip": "github:kirm/sip.js",
+    "uuid": "^7.0.3"
+  }
+}
