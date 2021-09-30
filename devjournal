@@ -1,32 +1,100 @@
 ---------------------------------------
 2021/09/30 takeshi:
 
-Draft
+Draft:
+
+Expected usage:
+
+1) starting a sip_mrcp stack:
+
+  const sm_stack = sip_mrcp.start(sip_options, mrcp_options, rtp_options, function new_session_callback(session, offered_payloads) {
+    if(session.resource_type != "speechsynth") {
+      session.refuse(400, "Only speechsynth allowed")
+      return
+    }
+    if(!offered_payloads.includes("pcmu")) {
+      session.refuse(400, "Olny pcmu allowed")
+      return
+    }
+
+    session.accept("pcmu")
+
+    session.on('SOME_EVENT', msg => {
+      // do something
+    })
+  })
+
+  // sip_options: see kirm/sip.js
+  // mrcp_options: {local_port} // local_ip should be the same as sip_options.local_ip (as the mrcp server must be reachable)
+  // rtp_options: {local_ip, ports}
+
+2) creating a sip_mrcp client session (function create_client_session will add an entry to sessions dictonary)
+  sm_stack.create_client_session(options, function new_session_callback(error, session) {
+    if(error) {
+      console.error(`failed to create session. error: ${error}`)
+      return
+    }
+
+    session.on('SOME_EVENT', msg => {
+      // do something
+    })
+
+    //session.payload will contain the accepted payload
+
+    session.send_request(MRCP_REQUEST)
+  })
+
+  /* options: {
+      server_ip: 'XXXXXX',
+      server_port: YYYY
+      payloads: LIST_OF_ACCEPTABLE_PAYLOADS
+    }
+  */
+
+3) refuse incoming session:
+   session.refuse(sip_reply_status, sip_reply_reason)
+
+4) accept incoming session:
+   session.accept(accepted_payload)
+   // the stack should instantiate an rtp_session and answer the SIP call
+
+5) session events:
+  - mrcp_msg
+  - end
+  - error
+
+
+Implementation:
 
 We will use an actor library and will process events from 3 sources this way:
 
-SIP stack:
+sip_stack (actor. Will keep a session dictonary):
   server-side:
     - INVITE: 
       - parse and validate SDP (if not valid, refuse the request at this point)
-      - notify sip_new_session
+      - create new session_actor and call new_session_callback if set
     - BYE:
       - notify sip_session_terminated
       
   client-side:
     - INVITE Response:
-      - notify sip_invite_response
+      - 200 OK:
+        - parse SDP and confirm it is OK (if not call create_session_callback(error))
+        - create rtp_session. on 'error' notify create_session_callback(error) and termiante other entities)
+        - create mrcp_socket. on 'error' notify create_session_callback(error) and terminate other_entities)
+        - call create_session_callback(null, session) 
+    - XXX SIP ERROR:
+      - call create_session_callback(error)
     - BYE: 
       - notify sip_session_terminated
 
-MRCP socket:
-  - error: notify_mrcp_error
+mrcp_socket (:
+  - error: notify mrcp_error
   - close: notify mrcp_closed
   - data: notify mrcp_msg
 
-RTP session:
+rtp_session:
   - error: notify rtp_error
-  - closed: notify rtp_closed
   - data: notify rtp_data
 
 
@@ -34,29 +102,19 @@ The events above will be notified to the session actor that will handle the even
 
 session_actor:
   - mrcp_closed:
-    - notify end of session.
-    - start timer to end the other entities
-  - mrcp_error:  
-    - notify end of session.
-    - start timer to end the other entities
+    - notify on('end') subscribers
+    - start timer to shutdown
+  - mrcp_error:
+    - notify on('error') subscribers
+    - start timer to shutdown
   - sip_session_terminated: 
-    - notify end of session
-    - start timer to end the other entities
-  - sip_new_session:
-    - call new_session_callback (callback should accept or refuse the call)
-  - sip_invite_response:
-    - 200 OK:
-      - parse SDP and confirm it is OK (if not call create_session_callback(error))
-      - create mrcp_session and wait for 'connected' or 'error' (if fail, call create_session_callback(error))
-      - call create_session_callback(OK)
-    - XXX SIP ERROR:
-      - call create_session_callback(error)
-  - mrcp_msg: 
+    - notify on('end') subscribers
+    - start timer to shutdown
+  - mrcp_msg:
     - notify on('mrcp_msg') subscribers
   - rtp_error:
-    - start timer to end the other entities
-  - rtp_closed:
-    - start timer to end the other entities
+    - notify on('error') subscribers
+    - start timer to shutdown
   - rtp_data:
     - notify on('rtp_data') subscribers 
 
