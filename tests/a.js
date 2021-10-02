@@ -22,7 +22,7 @@ const sm1 = new SipMrcp({
     },
     {
         local_ip: '127.0.0.1',
-        ports: [10000],
+        local_ports: [10000],
     },
     {
         local_port: '9001',
@@ -39,7 +39,7 @@ const sm2 = new SipMrcp({
     },
     {
         local_ip: '127.0.0.1',
-        ports: [10002],
+        local_ports: [10002],
     },
     {
         local_port: '9002',
