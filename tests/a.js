@@ -10,15 +10,6 @@ const sm1 = new SipMrcpStack({
         address: '127.0.0.1',
         port: 8091,
         publicAddress: '127.0.0.1',
-
-        logger: {
-            send: function(rq) {
-                return util.debuglog("send\n" + util.inspect(rq, null, null))
-            },
-            recv: function(rq) {
-                return util.debuglog("recv\n" + util.inspect(rq, null, null))
-            }
-        },
     },
     {
         local_ip: '127.0.0.1',
@@ -26,11 +17,8 @@ const sm1 = new SipMrcpStack({
     },
     {
         local_port: '9001',
-    },
-    new_session => {
-        console.log(`sm1 new session ${new_session}`)
-        new_session.accept(0)
-})
+    }
+)
 
 const sm2 = new SipMrcpStack({
         address: '127.0.0.1',
@@ -50,12 +38,23 @@ const sm2 = new SipMrcpStack({
         new_session.accept(0)
 
         new_session.on('mrcp_msg', msg => {
-            console.log(`sm2 got ${JSON.stringify(msg)}`)
+            console.log(`sm2 got mrcp_msg ${JSON.stringify(msg)}`)
             const response = mrcp.builder.build_response(msg.request_id, 200, 'COMPLETE', {'channel-identifier': new_session.data.mrcp_uuid, 'Completion-Cause': '000 success'})
             new_session.send_mrcp_msg(response)
+
+            const data = Buffer.alloc(10)
+            new_session.send_rtp_data(data)
         })
 
-})
+        new_session.on('rtp_data', data => {
+            console.log(`sm2 got rtp_data ${JSON.stringify(data)}`)
+        })
+
+        new_session.on('error', err => {
+            console.log("sm2 got error", err)
+        })
+    }
+)
 
 
 const sip_uri = "sip:sm2@127.0.0.1:8092"
@@ -71,10 +70,18 @@ sm1.create_session(sip_uri, resource_type, offer_payloads, (err, new_session) =>
 
     new_session.on('mrcp_msg', msg => {
         console.log("sm1 got mrcp_msg", msg)
+
+        const data = Buffer.alloc(10)
+
+        new_session.send_rtp_data(data)
+    })
+
+    new_session.on('rtp_data', data => {
+        console.log(`sm1 got rtp_data ${JSON.stringify(data)}`)
     })
 
     new_session.on('error', err => {
-        console.log("sm1 got error", msg)
+        console.log("sm1 got error", err)
     })
 
     const request_id = 1
