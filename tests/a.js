@@ -43,7 +43,8 @@ const sm2 = new SipMrcpStack({
             new_session.send_mrcp_msg(response)
 
             const data = Buffer.alloc(10)
-            new_session.send_rtp_data(data)
+            const marker_bit = 0
+            new_session.send_rtp_data(data, marker_bit)
         })
 
         new_session.on('rtp_data', data => {
@@ -72,8 +73,9 @@ sm1.create_session(sip_uri, resource_type, offer_payloads, (err, new_session) =>
         console.log("sm1 got mrcp_msg", msg)
 
         const data = Buffer.alloc(10)
+        const marker_bit = 0
 
-        new_session.send_rtp_data(data)
+        new_session.send_rtp_data(data, marker_bit)
     })
 
     new_session.on('rtp_data', data => {
