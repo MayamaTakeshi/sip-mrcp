@@ -25,7 +25,10 @@
   "author": "MayamaTakeshi",
   "license": "MIT",
   "dependencies": {
+    "collections": "^5.1.12",
     "lodash": "^4.17.20",
+    "magic-globals": "^0.9.1",
+    "moment": "^2.29.1",
     "mrcp": "^1.3.8",
     "mrcp-utils": "^1.1.2",
     "rtp-session": "^1.3.2",

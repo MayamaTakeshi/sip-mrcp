@@ -7,13 +7,13 @@ Expected usage:
 
 1) starting a sip_mrcp stack:
 
-  const sm_stack = sip_mrcp.start(sip_options, mrcp_options, rtp_options, function new_session_callback(session, offered_payloads) {
+  const sm_stack = sip_mrcp.create(sip_options, rtp_options, mrcp_options, function new_session_callback(session) {
     if(session.resource_type != "speechsynth") {
       session.refuse(400, "Only speechsynth allowed")
       return
     }
-    if(!offered_payloads.includes("pcmu")) {
-      session.refuse(400, "Olny pcmu allowed")
+    if(!session.offered_payloads.includes("pcmu")) {
+      session.refuse(400, "Only pcmu allowed")
       return
     }
 
@@ -60,9 +60,8 @@ Expected usage:
 
 5) session events:
   - mrcp_msg
-  - end
   - error
-
+  - data
 
 Implementation:
 
