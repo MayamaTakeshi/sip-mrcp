@@ -30,7 +30,7 @@
     "magic-globals": "^0.9.1",
     "moment": "^2.29.1",
     "mrcp": "^1.3.8",
-    "mrcp-utils": "^1.1.2",
+    "mrcp-utils": "^1.2.0",
     "rtp-session": "^1.3.2",
     "sip": "github:kirm/sip.js",
     "tart": "github:organix/tartjs#v0.3.0",
