@@ -1,1 +1,1 @@
-module.exports = require('./lib/stack.js')
+module.exports = require('./lib/sip_mrcp_stack.js')

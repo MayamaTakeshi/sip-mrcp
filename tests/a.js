@@ -4,9 +4,9 @@ const util = require('util')
 
 const mrcp = require('mrcp')
 
-const SipMrcp = require('../index.js')
+const SipMrcpStack = require('../index.js')
 
-const sm1 = new SipMrcp({
+const sm1 = new SipMrcpStack({
         address: '127.0.0.1',
         port: 8091,
         publicAddress: '127.0.0.1',
@@ -32,7 +32,7 @@ const sm1 = new SipMrcp({
         new_session.accept(0)
 })
 
-const sm2 = new SipMrcp({
+const sm2 = new SipMrcpStack({
         address: '127.0.0.1',
         port: 8092,
         publicAddress: '127.0.0.1',
