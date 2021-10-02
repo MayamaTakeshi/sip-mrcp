@@ -49,6 +49,9 @@ const sm2 = new SipMrcpStack({
 
         new_session.on('rtp_data', data => {
             console.log(`sm2 got rtp_data ${JSON.stringify(data)}`)
+            setTimeout(() => {
+                new_session.terminate()
+            }, 5000)
         })
 
         new_session.on('error', err => {
@@ -80,6 +83,9 @@ sm1.create_session(sip_uri, resource_type, offer_payloads, (err, new_session) =>
 
     new_session.on('rtp_data', data => {
         console.log(`sm1 got rtp_data ${JSON.stringify(data)}`)
+        setTimeout(() => {
+            new_session.terminate()
+        }, 6000)
     })
 
     new_session.on('error', err => {
