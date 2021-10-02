@@ -28,7 +28,7 @@
   "dependencies": {
     "collections": "^5.1.12",
     "lodash": "^4.17.20",
-    "magic-globals": "^0.9.1",
+    "magic-globals": "github:MayamaTakeshi/magic-globals-MODS",
     "moment": "^2.29.1",
     "mrcp": "^1.3.8",
     "mrcp-utils": "^1.3.0",

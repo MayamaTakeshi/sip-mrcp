@@ -117,3 +117,39 @@ session_actor:
   - rtp_data:
     - notify on('rtp_data') subscribers 
 
+---------------------------------------
+2021/10/03 takeshi:
+
+Thinking about adding pluggable logger to my modules.
+
+But we might think in something generic like middleware:
+  https://thecodebarbarian.com/write-your-own-express-from-scratch
+
+Let's follow this:
+  https://stackoverflow.com/questions/22335644/best-practice-to-let-users-inject-a-logger-into-nodejs-modules
+
+---------------------------------------
+2021/10/03 takeshi:
+
+We are getting this error when trying to use magic-globals:
+
+takeshi:sip-mrcp$ node tests/a.js 
+/mnt/ssd/work/src/git/MayamaTakeshi/sip-mrcp/node_modules/magic-globals/magic-globals.js:7
+Object.defineProperty(global, '__stack', {
+       ^
+
+TypeError: Cannot redefine property: __stack
+    at Function.defineProperty (<anonymous>)
+    at Object.<anonymous> (/mnt/ssd/work/src/git/MayamaTakeshi/sip-mrcp/node_modules/magic-globals/magic-globals.js:7:8)
+    at Module._compile (internal/modules/cjs/loader.js:1015:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1035:10)
+    at Module.load (internal/modules/cjs/loader.js:879:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:724:14)
+    at Module.require (internal/modules/cjs/loader.js:903:19)
+    at require (internal/modules/cjs/helpers.js:74:18)
+    at Object.<anonymous> (/mnt/ssd/work/src/git/MayamaTakeshi/sip-mrcp/lib/sip_mrcp_stack.js:1:1)
+    at Module._compile (internal/modules/cjs/loader.js:1015:30)
+
+See: https://github.com/gavinengel/magic-globals/pull/7
+The PR was not merged yet so I forked the repo and will use it instead or original magic-globals:
+  https://github.com/MayamaTakeshi/magic-globals-MODS
