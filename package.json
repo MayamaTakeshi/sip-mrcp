@@ -1,7 +1,7 @@
 {
   "name": "sip-mrcp",
   "version": "1.0.0",
-  "description": "A SIP/MRCP module that permits to write MRCPv2 client/server apps",
+  "description": "A SIP/MRCP module that permits to write MRCPv2 client/server apps and tools",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -13,7 +13,8 @@
     "Control",
     "Protocol",
     "MRCP",
-    "SIP"
+    "SIP",
+    "RTP"
   ],
   "engines": {
     "node": "v12.19.0"

@@ -51,6 +51,8 @@ const sm2 = new SipMrcp({
 
         new_session.on('mrcp_msg', msg => {
             console.log(`sm2 got ${JSON.stringify(msg)}`)
+            const response = mrcp.builder.build_response(msg.request_id, 200, 'COMPLETE', {'channel-identifier': new_session.data.mrcp_uuid, 'Completion-Cause': '000 success'})
+            new_session.send_mrcp_msg(response)
         })
 
 })
