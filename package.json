@@ -38,6 +38,6 @@
     "uuid": "^7.0.3"
   },
   "devDependencies": {
-    "zester": "^2.20.10"
+    "zester": "^2.21.0"
   }
 }
