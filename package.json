@@ -27,6 +27,7 @@
   "license": "MIT",
   "dependencies": {
     "collections": "^5.1.12",
+    "data-matching": "^1.23.8",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "mrcp": "^1.3.8",
@@ -35,9 +36,7 @@
     "sip": "github:kirm/sip.js",
     "tart": "github:organix/tartjs#v0.3.0",
     "tracing-log": "^1.1.0",
-    "uuid": "^7.0.3"
-  },
-  "devDependencies": {
-    "zester": "^2.21.0"
+    "uuid": "^7.0.3",
+    "zester": "^4.1.1"
   }
 }
