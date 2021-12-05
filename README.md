@@ -8,6 +8,7 @@ npm install sip-mrcp
 
 ## Usage
 ```
+const sip_mrcp = require('sip-mrcp')
 const mrcp = require('mrcp')
 const log = require('tracing-log')
 
@@ -71,6 +72,7 @@ client.create_session(sip_uri, resource_type, offer_payloads, (error, new_sessio
     new_session.send_mrcp_msg(SOME_MRCP_MESSAGE)
 
     // and handle MRCP msgs and RTP data
+
     new_session.on('mrcp_msg', msg => { // do something }
 
     new_session.on('rtp_data', msg => { // do something }
