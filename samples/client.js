@@ -21,8 +21,13 @@ const client = new sip_mrcp.SipMrcpStack({
 const sip_uri = "sip:sm2@127.0.0.1:8092"
 const resource_type = "speechsynth"
 
-const pcmu = 0
-const offer_payloads = [pcmu]
+const offer_payloads = [
+    {
+        id: 0,
+        codec_name: 'PCMU',
+        clock_rate: 8000,
+    }
+]
 
 client.create_session(sip_uri, resource_type, offer_payloads, (error, new_session) => {
     if(error) {
@@ -31,6 +36,7 @@ client.create_session(sip_uri, resource_type, offer_payloads, (error, new_sessio
     }
 
     log.info("new_session created")
+    console.dir(new_session)
 
     const request_id = 1
     const method = 'SPEAK'

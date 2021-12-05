@@ -17,9 +17,13 @@ const server = new sip_mrcp.SipMrcpStack({
         local_port: '9002',
     },
     new_session_callback: new_session => {
-        const pcmu = 0
+        var payload = {
+            id: 0,
+            codec_name: 'PCMU',
+            clock_rate: 8000,
+        }
 
-        new_session.accept(pcmu)
+        new_session.accept(payload)
 
         new_session.on('mrcp_msg', msg => {
             if(msg.type == 'request' && msg.method == 'SPEAK') {

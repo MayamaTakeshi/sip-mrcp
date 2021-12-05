@@ -44,8 +44,24 @@ async function test() {
     const sip_uri = "sip:sm2@127.0.0.1:8092"
     const resource_type = "speechrecog"
 
-    const pcmu = 0
-    const offer_payloads = [pcmu]
+    const offer_payloads = [
+        {
+            id: 0,
+            codec_name: 'PCMU',
+            clock_rate: 8000,
+        },
+        {
+            id: 8,
+            codec_name: 'PCMA',
+            clock_rate: 8000,
+        },
+        {
+            id: 3,
+            codec_name: 'GSM',
+            clock_rate: 8000,
+        },
+   ]
+
     sm1.create_session(sip_uri, resource_type, offer_payloads, z.callback_trap("sm1_new_session"))
 
     await z.wait([
@@ -60,7 +76,7 @@ async function test() {
 
     z.trap_events(sm2_session, 'sm2_session')
 
-    sm2_session.accept(pcmu)
+    sm2_session.accept(offer_payloads[0])
 
     await z.wait([
         {
@@ -160,6 +176,10 @@ async function test() {
             ]
        },
     ], 1000)
+
+    sm1_session.terminate()
+
+    await z.sleep(100)
 
     log.info("Success")
     process.exit(0)
