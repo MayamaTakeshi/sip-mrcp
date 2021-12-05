@@ -63,6 +63,9 @@ client.create_session(sip_uri, resource_type, offer_payloads, (error, new_sessio
             }
             log.info('success')
             new_session.terminate()
+            setTimeout(() => {
+                process.exit(0)
+            }, 200)
         } else {
             log.error("Unexpected mrcp_msg")
             process.exit(1)

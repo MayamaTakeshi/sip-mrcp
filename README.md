@@ -26,7 +26,15 @@ const server = new sip_mrcp.SipMrcpStack({
     },
     new_session_callback: new_session => { 
         // accept or refuse the session
-        new_session.accept(0)
+        const answer_payload = {
+            id: 0,
+            codec_name: 'PCMU',
+            clock_rate: 8000,
+        }
+
+        new_session.accept(answer_payload)
+
+        // or
         // new_session.refuse(404, 'Not Found')
 
         // on a session you can wait for mrcp_msg and rtp_data:
@@ -56,7 +64,18 @@ const sip_uri = "sip:sm2@127.0.0.1:8092"
 const resource_type = "speechsynth"
 
 const pcmu = 0
-const offer_payloads = [pcmu]
+const offer_payloads = [
+    {
+        id: 0,
+        codec_name: 'PCMU',
+        clock_rate: 8000,
+    },
+    {
+        id: 8,
+        codec_name: 'PCMA',
+        clock_rate: 8000,
+    }
+]
 
 client.create_session(sip_uri, resource_type, offer_payloads, (error, new_session) => {
     if(error) {

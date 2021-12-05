@@ -1,5 +1,7 @@
 const sip_mrcp = require('../index.js')
 
+const assert = require('assert')
+
 const mrcp = require('mrcp')
 const log = require('tracing-log')
 
@@ -90,6 +92,9 @@ async function test() {
     ], 1000)
 
     const sm1_session = z.store.sm1_session
+
+    // once the session is established, the session.payload_type will be set
+    assert(sm1_session.payload_type == 0)
 
     z.trap_events(sm1_session, 'sm1_session')
 
