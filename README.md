@@ -10,7 +10,6 @@ npm install sip-mrcp
 ```
 const sip_mrcp = require('sip-mrcp')
 const mrcp = require('mrcp')
-const log = require('tracing-log')
 
 const server = new sip_mrcp.SipMrcpStack({
     sip_options: { // see available options at https://github.com/kirm/sip.js/blob/master/doc/api.markdown
@@ -61,11 +60,11 @@ const offer_payloads = [pcmu]
 
 client.create_session(sip_uri, resource_type, offer_payloads, (error, new_session) => {
     if(error) {
-        log.error(error)
+        console.error(error)
         process.exit(1)
     }
 
-    log.info("new_session created")
+    console.info("new_session created")
 
     // once you have a session, you can send MRCP requests
 
