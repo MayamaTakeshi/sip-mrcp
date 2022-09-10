@@ -7,9 +7,9 @@ const log = require('tracing-log')
 
 const m = require('data-matching')
 
-const Zester = require('zester')
+const Zeq = require('@mayama/zeq')
 
-const z = new Zester()
+const z = new Zeq()
 
 async function test() {
     const sm1 = new sip_mrcp.SipMrcpStack({
